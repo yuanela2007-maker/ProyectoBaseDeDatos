@@ -40,3 +40,8 @@ SELECT tablaOrigenSalida, estadoSalida, COUNT(*) AS cantidad FROM SYNC_SALIDA GR
 -- 8. lo que la central entrego a esta sucursal
 SELECT origenRecibido, resultadoRecibido, COUNT(*) AS cantidad FROM SYNC_RECIBIDO GROUP BY origenRecibido, resultadoRecibido;
 SELECT idProducto, precioActualProducto FROM PRODUCTO ORDER BY idProducto;
+
+
+---verificar
+SELECT COUNT(*) FROM FACTURA;
+SELECT COUNT(*) FROM CLIENTE;
