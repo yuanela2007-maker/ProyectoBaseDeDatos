@@ -2,6 +2,15 @@
 -- Se ejecuta al final, cuando las dos sucursales ya tienen Oracle accesible por la red.
 
 SET VERIFY OFF
+
+-- 0. si los enlaces ya existen se borran para crearlos de nuevo (la primera vez no hace nada)
+BEGIN
+    FOR l IN (SELECT db_link FROM user_db_links WHERE db_link IN ('LNK_SUC01', 'LNK_SUC02')) LOOP
+        EXECUTE IMMEDIATE 'DROP DATABASE LINK ' || l.db_link;
+    END LOOP;
+END;
+/
+
 ACCEPT hostSuc01 CHAR PROMPT 'IP o nombre de SUC01: '
 ACCEPT puertoSuc01 NUMBER DEFAULT 1521 PROMPT 'Puerto de SUC01 [1521]: '
 ACCEPT servicioSuc01 CHAR DEFAULT XEPDB1 PROMPT 'Servicio de SUC01 [XEPDB1]: '
@@ -22,6 +31,7 @@ CREATE DATABASE LINK LNK_SUC02
 CONNECT TO &usuarioSuc02 IDENTIFIED BY "&claveSuc02"
 USING '//&hostSuc02:&puertoSuc02/&servicioSuc02';
 
+--
 SELECT 'SUC01' AS sucursal, COUNT(*) AS sucursales FROM SUCURSAL@LNK_SUC01
 UNION ALL
 SELECT 'SUC02', COUNT(*) FROM SUCURSAL@LNK_SUC02;
@@ -31,5 +41,9 @@ UNDEFINE hostSuc02 puertoSuc02 servicioSuc02 usuarioSuc02 claveSuc02
 
 
 
+-----------------------------------------------------------------------------------------------------
+--Comprobamos que la conexion se hizo correctamente
+SELECT 1 FROM DUAL@LNK_SUC01;
+SELECT 1 FROM DUAL@LNK_SUC02;
 --Comprobar como quedo escrita las IPS  
 SELECT db_link, username, host FROM user_db_links;
