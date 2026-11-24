@@ -7,7 +7,15 @@ VARIABLE idFactura NUMBER
 -- 1. dos clientes nuevos
 EXEC SP_GUARDAR_CLIENTE(1, 5, 'CEDULA', '311110001', 'Daniela Mora Vega');
 EXEC SP_GUARDAR_CLIENTE(1, 6, 'CEDULA', '311110002', 'Kevin Solano Rojas');
+
+--Este es importante para ver los clientes propios !!!!!
 SELECT idClienteLocal, nombreCliente, versionCliente FROM CLIENTE WHERE idSucursalOrigen = 1 ORDER BY idClienteLocal;
+
+--Para ver los nombres de todos clientes y su info. ES IMPORTANTE !!!
+--Pues mostrara todos los clientes de las tres sucursales 
+SELECT idSucursalOrigen, idClienteLocal, nombreCliente, numeroIdentificacionCliente, versionCliente
+FROM CLIENTE
+ORDER BY idSucursalOrigen, idClienteLocal;
 
 -- 2. dos facturas con varias lineas (producto:cantidad;producto:cantidad)
 EXEC SP_EMITIR_FACTURA(1, 1, 5, '2:1;7:2', :idFactura);

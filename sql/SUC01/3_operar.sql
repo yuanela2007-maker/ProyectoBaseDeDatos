@@ -23,6 +23,10 @@ SELECT idRango, numeroInicialRango, numeroFinalRango, proximoNumeroRango, estado
 -- PARTE B. ANTES DE QUE LA CENTRAL SINCRONICE (facturar y dejar envios PENDIENTE)
 ------------------------------------------------------------
 -- 4. facturar (funciona aunque la central este apagada). El detalle va como producto:cantidad;producto:cantidad [una sola vez] (cada vez crea facturas nuevas)
+
+
+--Este es importante para agregar facturas!!!!!
+
 VARIABLE idFactura NUMBER
 -- Maria Rojas Mora
 EXEC SP_EMITIR_FACTURA(1, 1, 1, '1:1;5:2', :idFactura);
