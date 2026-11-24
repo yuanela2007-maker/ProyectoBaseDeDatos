@@ -9,9 +9,12 @@ SET SERVEROUTPUT ON
 SELECT object_name, object_type, status FROM user_objects WHERE status <> 'VALID';
 
 -- 2. datos iniciales [se puede repetir]
+
+--Se va viendo la suma de los clientes (pasa de 3 a 6 y luego a 9). ESTE ES IMPORTANTE!!!
 SELECT 'PRODUCTO' AS tabla, COUNT(*) AS filas FROM PRODUCTO
 UNION ALL SELECT 'CLIENTE', COUNT(*) FROM CLIENTE
 UNION ALL SELECT 'FACTURA', COUNT(*) FROM FACTURA;
+
 
 -- 3. bloque de numeracion propio [se puede repetir]
 SELECT idRango, numeroInicialRango, numeroFinalRango, proximoNumeroRango, estadoRango FROM RANGO_FACTURA;
@@ -36,7 +39,11 @@ PRINT idFactura
 -- 5. facturas emitidas y envios pendientes hacia la central [se puede repetir]
 SELECT idFactura, idClienteLocal, totalFactura FROM FACTURA ORDER BY idFactura;
 
+
+--SIRVE PARA VER EL ESTADO DE LOS CLIENTES. EJECUTAMOS PRIMERO Y SALDRA PENDIENTE, LUEGO SALDRA APLICADO. 
+--ESTE ES IMPORTANTE!!
 SELECT tablaOrigenSalida, estadoSalida, COUNT(*) AS cantidad FROM SYNC_SALIDA GROUP BY tablaOrigenSalida, estadoSalida;
+
 
 -- 6. guardar un cliente nuevo (queda pendiente para la central) [una sola vez] (repetirlo sube la version del cliente)
 EXEC SP_GUARDAR_CLIENTE(1, 4, 'CEDULA', '112233445', 'Nuevo Cliente');
@@ -50,7 +57,9 @@ SELECT tablaOrigenSalida, estadoSalida, COUNT(*) AS cantidad FROM SYNC_SALIDA GR
 -- 8. lo que la central entrego a esta sucursal [se puede repetir]
 SELECT origenRecibido, resultadoRecibido, COUNT(*) AS cantidad FROM SYNC_RECIBIDO GROUP BY origenRecibido, resultadoRecibido;
 
-SELECT idProducto, precioActualProducto FROM PRODUCTO ORDER BY idProducto;
+--Muestra el precio de los productos actuales. Sirve para ver precios modificados!!!!!!! ESTE ES IMPORTANTE 
+SELECT idProducto, precioActualProducto FROM PRODUCTO ORDER BY idProducto; 
+
 
 
 ---verificar
